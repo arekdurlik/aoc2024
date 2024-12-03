@@ -3,7 +3,7 @@ import { getValidNumberPair, hasDoInstruction, hasDontInstruction } from './util
 
 export const part2: Part = input => {
     const split = input.split(/mul\(|(?<!\()\)/);
-    let product = 0;
+    let sum = 0;
     let enabled = true;
 
     split.forEach(v => {
@@ -14,10 +14,10 @@ export const part2: Part = input => {
         } else if (enabled) {
             try {
                 const numbers = getValidNumberPair(v);
-                product += numbers[0] * numbers[1];
+                sum += numbers[0] * numbers[1];
             } catch {}
         }
     });
 
-    return product;
+    return sum;
 };
