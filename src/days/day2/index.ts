@@ -1,2 +1,2 @@
-export { part1 } from './part1';
-export { part2 } from './part2';
+export { part1, part1TestExpectedValue } from './part1';
+export { part2, part2TestExpectedValue } from './part2';

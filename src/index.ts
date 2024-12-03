@@ -1,39 +1,68 @@
 import { Day } from './types';
-import { readFile, terminate } from './utils';
+import { getIsCorrectSymbol, readFile, terminate } from './utils';
 
 (async () => {
-    const mode = process.env.MODE || 'full';
+    const mode = process.env.MODE;
     const day = parseInt(process.argv[2], 10);
-    const part = parseInt(process.argv[3], 10);
-    let input = '';
+    let testInput = '';
+    let fullInput = '';
 
     if (isNaN(day)) {
-        terminate(`ERROR: Invalid parameters. Usage: npm run ${mode} <day> [part]`);
+        terminate(`ERROR: Invalid day parameter.`);
     }
 
     try {
-        input = readFile(mode === 'full' ? `days/day${day}/input.txt` : `days/day${day}/test.txt`);
+        testInput = readFile(`../src/days/day${day}/test.txt`);
+    } catch {}
 
-        if (!input.length) throw Error();
-    } catch {
-        terminate(
-            `ERROR: ${mode === 'full' ? 'Full' : 'Test'} input for day ${day} does not exist.`
-        );
+    try {
+        fullInput = readFile(`days/day${day}/input.txt`);
+    } catch {}
+
+    if (!testInput.length && !fullInput.length) {
+        terminate(`ERROR: No input data found for day ${day}.`);
     }
 
     try {
         const selectedDay = (await import(`./days/day${day}/index.ts`)) as Day;
 
-        if (part === 1 || part === 2 || isNaN(part)) {
-            if (part === 1 || isNaN(part)) {
-                console.log(`Day ${day}, part 1:`, selectedDay.part1(input));
-            }
-
-            if (part === 2 || isNaN(part)) {
-                console.log(`Day ${day}, part 2:`, selectedDay.part2(input));
-            }
+        if (mode === 'watch') {
+            console.clear();
+            console.log(`Watching day ${day}...\n`);
         } else {
-            terminate('ERROR: Invalid part parameter.');
+            console.log(`Results for day ${day}:\n`);
+        }
+
+        if (testInput.length) {
+            const result = selectedDay.part1(testInput);
+            const expected = selectedDay.part1TestExpectedValue;
+
+            console.log(
+                'Part 1 (test):',
+                selectedDay.part1(testInput),
+                getIsCorrectSymbol(result, expected)
+            );
+        }
+
+        if (fullInput.length) {
+            console.log('Part 1 (full):', selectedDay.part1(fullInput));
+        }
+
+        console.log('\n');
+
+        if (testInput.length) {
+            const result = selectedDay.part2(testInput);
+            const expected = selectedDay.part2TestExpectedValue;
+
+            console.log(
+                'Part 2 (test):',
+                selectedDay.part2(testInput),
+                getIsCorrectSymbol(result, expected)
+            );
+        }
+
+        if (fullInput.length) {
+            console.log('Part 2 (full):', selectedDay.part2(fullInput));
         }
     } catch (error) {
         terminate(`ERROR: Day ${day} does not exist.`);

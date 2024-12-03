@@ -1,6 +1,8 @@
 import { Part } from '../../types';
 import { hasValidDifferences, isMonotonic } from './utils';
 
+export const part1TestExpectedValue = 2;
+
 function isSafe(list: number[]) {
     return isMonotonic(list) && hasValidDifferences(list);
 }

@@ -1,5 +1,7 @@
 import { Part } from '../../types';
 
+export const part1TestExpectedValue = 11;
+
 export const part1: Part = input => {
     const numbers = input
         .split('\r\n')

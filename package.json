@@ -3,16 +3,15 @@
     "version": "1.0.0",
     "main": "index.ts",
     "scripts": {
-        "start": "tsc && node dist/index.js",
-        "test": "env MODE=test nodemon src/index.ts --quiet",
-        "full": "env MODE=full nodemon src/index.ts --quiet"
+        "test": "env MODE=test tsc && ts-node src/index.ts",
+        "watch": "env MODE=watch nodemon src/index.ts --quiet"
     },
     "devDependencies": {
         "@types/node": "^20.17.9",
+        "ts-node": "^10.9.2",
         "typescript": "^5.3.2"
     },
     "dependencies": {
-        "nodemon": "^3.1.7",
-        "ts-node": "^10.9.2"
+        "nodemon": "^3.1.7"
     }
 }

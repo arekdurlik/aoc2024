@@ -1,6 +1,8 @@
 import { Part } from '../../types';
 import { getValidNumberPair } from './utils';
 
+export const part1TestExpectedValue = 161;
+
 export const part1: Part = input => {
     let sum = 0;
     const split = input.split(/mul\(|\)/);
