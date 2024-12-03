@@ -8,24 +8,16 @@ import { readFile, terminate } from './utils';
     let input = '';
 
     if (isNaN(day)) {
-        terminate(
-            `ERROR: Invalid parameters. Usage: npm run ${mode} <day> [part]`
-        );
+        terminate(`ERROR: Invalid parameters. Usage: npm run ${mode} <day> [part]`);
     }
 
     try {
-        input = readFile(
-            mode === 'full'
-                ? `days/day${day}/input.txt`
-                : `days/day${day}/test.txt`
-        );
+        input = readFile(mode === 'full' ? `days/day${day}/input.txt` : `days/day${day}/test.txt`);
 
         if (!input.length) throw Error();
     } catch {
         terminate(
-            `ERROR: ${
-                mode === 'full' ? 'Full' : 'Test'
-            } input for day ${day} does not exist.`
+            `ERROR: ${mode === 'full' ? 'Full' : 'Test'} input for day ${day} does not exist.`
         );
     }
 
