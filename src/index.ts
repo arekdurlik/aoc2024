@@ -65,6 +65,6 @@ import { getIsCorrectSymbol, readFile, terminate } from './utils';
             console.log('Part 2 (full):', selectedDay.part2(fullInput));
         }
     } catch (error) {
-        terminate(`ERROR: Day ${day} does not exist.`);
+        terminate(`ERROR: ${error}`);
     }
 })();
