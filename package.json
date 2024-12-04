@@ -12,6 +12,7 @@
         "typescript": "^5.3.2"
     },
     "dependencies": {
-        "nodemon": "^3.1.7"
+        "nodemon": "^3.1.7",
+        "tty-table": "^4.2.3"
     }
 }

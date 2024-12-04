@@ -24,10 +24,7 @@ export const part1: Part = input => {
         function addDirection(dx: number, dy: number) {
             if (canMove(dx, dy)) {
                 directions.push(
-                    Array.from(
-                        { length: wordLength },
-                        (_, i) => [x + dx * i, y + dy * i] as [number, number]
-                    )
+                    Array.from({ length: wordLength }, (_, i) => [x + dx * i, y + dy * i])
                 );
             }
         }

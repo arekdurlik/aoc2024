@@ -22,8 +22,8 @@ export const part2: Part = input => {
         return firstCrossValid && secondCrossValid;
     }
 
-    for (let i = 0; i < lines.length; i++) {
-        for (let j = 0; j < lines[i].length; j++) {
+    for (let i = 1; i < lines.length - 1; i++) {
+        for (let j = 1; j < lines[i].length - 1; j++) {
             if (isXmas(lines, j, i)) {
                 sum += 1;
             }

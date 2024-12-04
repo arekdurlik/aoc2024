@@ -1,11 +1,20 @@
-import { Day } from './types';
-import { getIsCorrectSymbol, readFile, terminate } from './utils';
+import {
+    capitalize,
+    formatHrtime,
+    getIsCorrectSymbol,
+    loadDay,
+    readFile,
+    renderTable,
+    terminate,
+} from './utils';
 
 (async () => {
     const mode = process.env.MODE;
     const day = parseInt(process.argv[2], 10);
     let testInput = '';
     let fullInput = '';
+
+    console.log('Running tests...');
 
     if (isNaN(day)) {
         terminate(`ERROR: Invalid day parameter.`);
@@ -24,45 +33,55 @@ import { getIsCorrectSymbol, readFile, terminate } from './utils';
     }
 
     try {
-        const selectedDay = (await import(`./days/day${day}/index.ts`)) as Day;
+        const selectedDay = await loadDay(day);
+
+        let tableRows: any = [];
+
+        runTest(1, 'test');
+        runTest(1, 'full');
+
+        const table1 = renderTable(tableRows);
+        tableRows = [];
+
+        runTest(2, 'test');
+        runTest(2, 'full');
+
+        const table2 = renderTable(tableRows, { marginTop: 1 });
 
         if (mode === 'watch') {
             console.clear();
+            process.stdout.write('\x1Bc');
             console.log(`Watching day ${day}...\n`);
         } else {
-            console.log(`Results for day ${day}:\n`);
+            console.log(`\nResults for day ${day}:\n`);
         }
 
-        if (testInput.length) {
-            const result = selectedDay.part1(testInput);
-            const expected = selectedDay.part1TestExpectedValue;
+        console.log(table1);
+        console.log(table2);
 
-            console.log(
-                'Part 1 (test):',
-                selectedDay.part1(testInput),
-                getIsCorrectSymbol(result, expected)
-            );
-        }
+        function runTest(part: 1 | 2, type: 'test' | 'full') {
+            const testToRun = part === 1 ? selectedDay.part1 : selectedDay.part2;
+            const inputToRun = type === 'test' ? testInput : fullInput;
+            const expectedValue =
+                type === 'full'
+                    ? undefined
+                    : part === 1
+                    ? selectedDay.part1TestExpectedValue
+                    : selectedDay.part2TestExpectedValue;
 
-        if (fullInput.length) {
-            console.log('Part 1 (full):', selectedDay.part1(fullInput));
-        }
+            let result = undefined;
+            let elapsed = '';
 
-        console.log('\n');
+            const startTime = process.hrtime();
+            result = testToRun(inputToRun);
+            elapsed = formatHrtime(process.hrtime(startTime));
 
-        if (testInput.length) {
-            const result = selectedDay.part2(testInput);
-            const expected = selectedDay.part2TestExpectedValue;
-
-            console.log(
-                'Part 2 (test):',
-                selectedDay.part2(testInput),
-                getIsCorrectSymbol(result, expected)
-            );
-        }
-
-        if (fullInput.length) {
-            console.log('Part 2 (full):', selectedDay.part2(fullInput));
+            tableRows.push({
+                Part: part,
+                Type: capitalize(type),
+                Result: result ? result + ' ' + getIsCorrectSymbol(result, expectedValue) : '',
+                'Elapsed time': result ? elapsed : '',
+            });
         }
     } catch (error) {
         terminate(`ERROR: ${error}`);
