@@ -14,7 +14,12 @@ import {
     let testInput = '';
     let fullInput = '';
 
-    console.log('Running tests...');
+    if (mode === 'watch') {
+        console.clear();
+        process.stdout.write('\x1Bc');
+    }
+
+    console.log(`Running tests...`);
 
     if (isNaN(day)) {
         terminate(`ERROR: Invalid day parameter.`);
