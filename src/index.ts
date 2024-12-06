@@ -11,47 +11,81 @@ import {
 (async () => {
     const mode = process.env.MODE;
     const day = parseInt(process.argv[2], 10);
-    let testInput = '';
-    let fullInput = '';
 
-    if (mode === 'watch') {
-        console.clear();
-        process.stdout.write('\x1Bc');
+    if (isNaN(day)) terminate(`ERROR: Invalid day parameter.`);
+
+    const [testInput, fullInput] = loadInputs();
+
+    const selectedDay = await loadDay(day);
+
+    initOutput();
+
+    let part1TableRows: any = [];
+    let part2TableRows: any = [];
+
+    if (testInput.length) {
+        part1TableRows.push(runTest(1, 'test'));
+        part2TableRows.push(runTest(2, 'test'));
     }
 
-    console.log(`Running tests...`);
-
-    if (isNaN(day)) {
-        terminate(`ERROR: Invalid day parameter.`);
+    if (fullInput.length) {
+        part1TableRows.push(runTest(1, 'full'));
+        part2TableRows.push(runTest(2, 'full'));
     }
 
-    try {
-        testInput = readFile(`../src/days/day${day}/test.txt`);
-    } catch {}
+    const table1 = renderTable(part1TableRows);
+    const table2 = renderTable(part2TableRows, { marginTop: 1 });
 
-    try {
-        fullInput = readFile(`days/day${day}/input.txt`);
-    } catch {}
+    renderOutput([table1, table2]);
 
-    if (!testInput.length && !fullInput.length) {
-        terminate(`ERROR: No input data found for day ${day}.`);
+    function runTest(part: 1 | 2, type: 'test' | 'full') {
+        const testToRun = part === 1 ? selectedDay.part1 : selectedDay.part2;
+        const inputToRun = type === 'test' ? testInput : fullInput;
+        const expectedValue =
+            type === 'full'
+                ? undefined
+                : part === 1
+                ? selectedDay.part1TestExpectedValue
+                : selectedDay.part2TestExpectedValue;
+
+        const { result, elapsed } = withMeasure(() => testToRun(inputToRun));
+
+        return ({
+            Part: part,
+            Type: capitalize(type),
+            Result: result ? result + ' ' + getIsCorrectSymbol(result, expectedValue) : '',
+            'Elapsed time': result ? elapsed : '',
+        });
     }
 
-    try {
-        const selectedDay = await loadDay(day);
+    function withMeasure(fn: Function) {
+        const startTime = process.hrtime();
+        const result = fn();
+        const elapsed = formatHrtime(process.hrtime(startTime));
+        return { result, elapsed };
+    }
 
-        let tableRows: any = [];
+    function loadInputs() {
+        let testInput = '';
+        let fullInput = '';
 
-        runTest(1, 'test');
-        runTest(1, 'full');
+        try {
+            testInput = readFile(`../src/days/day${day}/test.txt`);
+        } catch {}
 
-        const table1 = renderTable(tableRows);
-        tableRows = [];
+        try {
+            fullInput = readFile(`./days/day${day}/input.txt`);
+        } catch {}
 
-        runTest(2, 'test');
-        runTest(2, 'full');
+        if (!testInput.length && !fullInput.length) {
+            terminate(`ERROR: No input data found for day ${day}.`);
+        }
 
-        const table2 = renderTable(tableRows, { marginTop: 1 });
+        return [testInput, fullInput];
+    }
+
+    function initOutput() {
+        console.log(`Running tests...`);
 
         if (mode === 'watch') {
             console.clear();
@@ -60,35 +94,11 @@ import {
         } else {
             console.log(`\nResults for day ${day}:\n`);
         }
+    }
 
-        console.log(table1);
-        console.log(table2);
-
-        function runTest(part: 1 | 2, type: 'test' | 'full') {
-            const testToRun = part === 1 ? selectedDay.part1 : selectedDay.part2;
-            const inputToRun = type === 'test' ? testInput : fullInput;
-            const expectedValue =
-                type === 'full'
-                    ? undefined
-                    : part === 1
-                    ? selectedDay.part1TestExpectedValue
-                    : selectedDay.part2TestExpectedValue;
-
-            let result = undefined;
-            let elapsed = '';
-
-            const startTime = process.hrtime();
-            result = testToRun(inputToRun);
-            elapsed = formatHrtime(process.hrtime(startTime));
-
-            tableRows.push({
-                Part: part,
-                Type: capitalize(type),
-                Result: result ? result + ' ' + getIsCorrectSymbol(result, expectedValue) : '',
-                'Elapsed time': result ? elapsed : '',
-            });
-        }
-    } catch (error) {
-        terminate(`ERROR: ${error}`);
+    function renderOutput(data: any[]) {
+        data.forEach(v => {
+            console.log(v);
+        })
     }
 })();

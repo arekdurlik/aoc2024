@@ -28,6 +28,18 @@ export function terminate(string: string) {
     process.exit(1);
 }
 
+export function yellow(string: string) {
+    return '\x1b[33m' + string + '\x1b[0m';
+}
+
+export function green(string: string) {
+    return '\x1b[32m' + string + '\x1b[0m';
+}
+
+export function red(string: string) {
+    return '\x1b[31m' + string + '\x1b[0m';
+}
+
 export function getIsCorrectSymbol(result: number, expected?: number) {
     return expected === undefined
         ? ''
