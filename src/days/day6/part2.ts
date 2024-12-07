@@ -7,7 +7,7 @@ export const part2: Part = input => {
     let guard = '^';
     const obstacle = '#';
     const visited = 'X';
-    
+
     let initialGrid = input.split('\r\n').map(v => v.split(''));
     let grid = structuredClone(initialGrid);
     let width = grid[0].length;
@@ -18,7 +18,7 @@ export const part2: Part = input => {
     let direction: [number, number] = [0, -1];
     let validObstacles = 0;
 
-    function getInitialPosition (): [number, number] {
+    function getInitialPosition(): [number, number] {
         for (let i = 0; i < height; i++) {
             for (let j = 0; j < width; j++) {
                 if (grid[i][j] === guard) {
@@ -29,11 +29,11 @@ export const part2: Part = input => {
         return [0, 0];
     }
 
-    function positionInGrid (pos: [number, number]) {
+    function positionInGrid(pos: [number, number]) {
         return pos[0] >= 0 && pos[0] < width && pos[1] >= 0 && pos[1] < height;
     }
 
-    function turnRight () {
+    function turnRight() {
         if (direction[1] === -1) {
             direction = [1, 0];
         } else if (direction[0] === 1) {
@@ -45,7 +45,7 @@ export const part2: Part = input => {
         }
     }
 
-    function obstacleInTheWay (x: number, y: number, direction: number[]) {
+    function obstacleInTheWay(x: number, y: number, direction: number[]) {
         if (direction[1] === -1 && position[1] > 0) {
             return grid[y - 1][x] === obstacle;
         } else if (direction[0] === 1 && position[0] < width - 1) {
@@ -58,7 +58,7 @@ export const part2: Part = input => {
         return false;
     }
 
-    function move () {
+    function move() {
         if (obstacleInTheWay(position[0], position[1], direction)) {
             turnRight();
             return true;
@@ -69,7 +69,6 @@ export const part2: Part = input => {
             ];
 
             if (positionInGrid(newPosition)) {
-
                 if (position[0] === initialPosition[0] && position[1] === initialPosition[1]) {
                     grid[position[1]][position[0]] = green(visited);
                 } else {
@@ -84,7 +83,7 @@ export const part2: Part = input => {
         }
     }
 
-    function placeObstacle (position: [number, number]) {
+    function placeObstacle(position: [number, number]) {
         if (isInitialPosition(position) || isObstacle(position)) {
             return false;
         }
@@ -93,7 +92,7 @@ export const part2: Part = input => {
         return true;
     }
 
-    function run () {
+    function run() {
         let moves = 0;
         position = [...initialPosition];
         direction = [0, -1];
@@ -126,12 +125,11 @@ export const part2: Part = input => {
 
     return validObstacles;
 
-    function isInitialPosition (position: [number, number]) {
+    function isInitialPosition(position: [number, number]) {
         return position[0] === initialPosition[0] && position[1] === initialPosition[1];
     }
 
-    function isObstacle (position: [number, number]) {
+    function isObstacle(position: [number, number]) {
         return grid[position[1]][position[0]] === obstacle;
     }
-}
-
+};
