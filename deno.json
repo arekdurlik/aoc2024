@@ -1,0 +1,20 @@
+{
+    "tasks": {
+        "dev": "deno run --allow-read --watch --quiet main.ts",
+        "fmt": "deno fmt --watch"
+    },
+    "imports": {
+        "src/": "./src/"
+    },
+    "fmt": {
+        "lineWidth": 100,
+        "singleQuote": true,
+        "indentWidth": 4
+    },
+    "lint": {
+        "exclude": ["src/days/tpl"],
+        "rules": {
+            "exclude": ["no-empty"]
+        }
+    }
+}
