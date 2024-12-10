@@ -14,7 +14,7 @@
     "lint": {
         "exclude": ["src/days/tpl"],
         "rules": {
-            "exclude": ["no-empty"]
+            "exclude": ["no-empty", "no-explicit-any"]
         }
     }
 }

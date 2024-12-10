@@ -24,11 +24,7 @@ export function purple(string: string | number) {
 }
 
 export function getIsCorrectSymbol(result: number, expected?: number) {
-    return expected === undefined
-        ? ''
-        : result == expected
-        ? '\x1b[32m' + '(✓)' + '\x1b[0m'
-        : '\x1b[31m' + '(X)' + '\x1b[0m';
+    return expected === undefined ? '' : result == expected ? green('(✓)') : red('(X)');
 }
 
 export function formatDeltaTime(deltaTime: number): string {

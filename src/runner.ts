@@ -25,7 +25,7 @@ export function runTests(tests: Mode[], inputs: string[], module: PartModule) {
     tests.forEach((mode, idx) => {
         const input = mode === Mode.TEST ? inputs[0] : inputs[1];
         const expected = mode === Mode.TEST ? expectedValue : undefined;
-        
+
         const result = runTest(input, solve, expected);
         const title = mode === Mode.TEST ? 'Test: ' : 'Full: ';
 
