@@ -29,6 +29,8 @@ export function terminateWithUsage() {
     terminate('Invalid arguments. \n\nUsage: deno run dev <day> [part] [test|full]');
 }
 
-export function log(...data: any[]) {
-    true && console.log(...data);
-}
+export const CONSOLE = {
+    log(...data: any[]) {
+        true && console.log(...data);
+    },
+};
