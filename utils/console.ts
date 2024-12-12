@@ -30,7 +30,7 @@ export function terminateWithUsage() {
 }
 
 export const CONSOLE = {
-    log(...data: any[]) {
-        true && console.log(...data);
+    log(first: any | ((str: string) => string), ...data: any[]) {
+        true && console.log(...(typeof first === 'function' ? data.map(first) : [first, ...data]));
     },
 };
