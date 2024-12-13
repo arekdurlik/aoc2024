@@ -1,6 +1,6 @@
 import { Expected, Part } from '../../../types.ts';
 
-export const expectedValue: Expected = 140;
+export const expectedValue: Expected = 1930;
 
 type Cell = [number, number];
 
@@ -67,7 +67,7 @@ export const solve: Part = (input) => {
 
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
-            if (!visited[i][j] && grid[i][j] !== '.') {
+            if (!visited[i][j]) {
                 const symbol = grid[i][j];
                 const cells = floodFill(i, j, symbol);
                 const area = cells.length;
