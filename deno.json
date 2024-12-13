@@ -12,7 +12,7 @@
         "indentWidth": 4
     },
     "lint": {
-        "exclude": ["src/days/tpl"],
+        "exclude": ["src/days/template"],
         "rules": {
             "exclude": ["no-empty", "no-explicit-any"]
         }
