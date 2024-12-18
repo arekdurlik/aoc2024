@@ -81,12 +81,9 @@ export const solve: Part = (input) => {
         }
     }
 
-    return grid.reduce(
-        (acc, row, i) => {
-            return acc + row.reduce((acc, cell, j) => {
-                return acc + (cell === Cell.BOX ? (100 * i) + j : 0);
-            }, 0);
-        },
-        0,
-    );
+    return grid.reduce((acc, row, i) => {
+        return acc + row.reduce((acc, cell, j) => {
+            return acc + (cell === Cell.BOX ? (100 * i) + j : 0);
+        }, 0);
+    }, 0);
 };
