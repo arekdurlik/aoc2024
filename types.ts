@@ -4,8 +4,8 @@ export enum Mode {
 }
 
 export type PartModule = {
-    expectedValue?: number;
-    solve: (input: string) => number;
+    expectedValue?: number | string;
+    solve: (input: string) => number | string;
 };
 
 export type Part = PartModule['solve'];
